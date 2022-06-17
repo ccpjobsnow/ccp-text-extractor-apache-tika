@@ -16,6 +16,7 @@ import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
+import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.decorators.CcpTextDecorator;
 import com.ccp.dependency.injection.CcpImplementation;
 import com.ccp.especifications.text.extractor.CcpTextExtractor;
@@ -32,7 +33,7 @@ public class CcpTextExtractorApacheTika implements CcpTextExtractor {
 			str = split[1];
 		}
 
-		CcpTextDecorator ccpTextDecorator = new CcpTextDecorator(str);
+		CcpTextDecorator ccpTextDecorator = new CcpStringDecorator(str).text();
 		InputStream is = ccpTextDecorator.getByteArrayInputStream();
 		
 		ParseContext context = new ParseContext();
