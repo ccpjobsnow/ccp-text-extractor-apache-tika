@@ -18,11 +18,9 @@ import org.xml.sax.SAXException;
 
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.decorators.CcpTextDecorator;
-import com.ccp.dependency.injection.CcpImplementation;
 import com.ccp.especifications.text.extractor.CcpTextExtractor;
 
-@CcpImplementation
-public class CcpTextExtractorApacheTika implements CcpTextExtractor {
+class TextExtractorApacheTika implements CcpTextExtractor {
 
 	@Override
 	public String extractText(String content) {
