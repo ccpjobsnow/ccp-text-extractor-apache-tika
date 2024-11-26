@@ -24,34 +24,22 @@ import org.apache.tika.metadata.Metadata;
 class ApacheTikaTextExtractor implements CcpTextExtractor {
 
 	public String extractText(String content) {
-		InputStream is = this.getParameterAsByteArrayInputStream(content);
+		
 		ParseContext context = new ParseContext();
 		Detector detector = new DefaultDetector();
 		Parser parser = new AutoDetectParser(detector);
 		context.set(Parser.class, parser);
-		OutputStream outputstream = new ByteArrayOutputStream();
 		Metadata metadata = new Metadata();
-		ContentHandler handler = new BodyContentHandler(outputstream);
-		try {
+		
+		try(InputStream is = this.getParameterAsByteArrayInputStream(content);OutputStream outputstream = new ByteArrayOutputStream();) {
+			ContentHandler handler = new BodyContentHandler(outputstream);
 			parser.parse(is, handler, metadata, context);
+			String extractedText = outputstream.toString();
+			return extractedText;
 		} catch (IOException | SAXException | TikaException e) {
 			throw new RuntimeException(e);
 		}
 
-		String extractedText = outputstream.toString();
-
-		try {
-			outputstream.close();
-		} catch (IOException e) {
-			// Silenciator tabajara
-		}
-		try {
-			is.close();
-		} catch (IOException e) {
-			// Silenciator tabajara
-		}
-	
-		return extractedText;
 	}
 	
 	private ByteArrayInputStream getParameterAsByteArrayInputStream(String content) {
